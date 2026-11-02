@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebAssembly, explained</title>
+  <meta name="description" content="A plain-language guide to WebAssembly (Wasm), with a live demo that runs a real 204-byte module in your browser.">
+  
+  <link rel="canonical" href="https://gnyaneshwar76.github.io/webassembly-explained/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WebAssembly, explained">
+  <meta property="og:description" content="A plain-language guide to WebAssembly (Wasm), with a live demo that runs a real 204-byte module in your browser.">
+  <meta property="og:url" content="https://gnyaneshwar76.github.io/webassembly-explained/">
+  <meta property="og:image" content="https://gnyaneshwar76.github.io/webassembly-explained/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="top">
+      <a class="wordmark" href="index.html">WebAssembly, explained</a>
+      <nav aria-label="Main"><a href="index.html" aria-current="page">Overview</a><a href="what-is-wasm.html">What is Wasm</a><a href="try-it.html">Try it</a><a href="languages.html">Languages and tools</a><a href="resources.html">Resources</a></nav>
+    </header>
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">Independent explainer</p>
+        <h1>WebAssembly, explained</h1>
+        <p class="lead">WebAssembly, or Wasm, is a compact binary format that browsers run at near-native speed. You write code in a language such as C, C++ or Rust, compile it once, and run it next to your JavaScript.</p>
+        <p class="bytes" aria-label="Hexadecimal bytes 00 61 73 6d 01 00 00 00">00 61 73 6d 01 00 00 00</p>
+        <p class="muted small">The first eight bytes of every <code>.wasm</code> file: the magic number <code>\0asm</code>, then format version 1.</p>
+        <div class="actions">
+          <a class="btn-primary" href="try-it.html">Try it in your browser</a>
+          <a href="what-is-wasm.html">Read what it is</a>
+        </div>
+      </section>
+
+      <section aria-labelledby="ideas">
+        <h2 id="ideas">Four ideas behind it</h2>
+        <dl class="rows">
+          <div><dt>Efficient and fast</dt><dd>A compact binary format that loads quickly and is designed to run at close to native speed.</dd></div>
+          <div><dt>Safe</dt><dd>Code runs in a memory-safe sandbox. On the web it follows the browser's same-origin and permission rules.</dd></div>
+          <div><dt>Open and debuggable</dt><dd>There is a human-readable text format for reading, testing and hand-writing modules. The <a href="try-it.html">Try it</a> page shows one.</dd></div>
+          <div><dt>Part of the open web platform</dt><dd>Standardised at the W3C, supported by every major browser, and able to call JavaScript and Web APIs.</dd></div>
+        </dl>
+        <p class="muted small">Summarised from the project description at <a href="https://webassembly.org/">webassembly.org</a>.</p>
+      </section>
+
+      <section aria-labelledby="facts">
+        <h2 id="facts">Facts and figures</h2>
+        <dl class="rows facts">
+          <div><dt>Browser support</dt><dd>Chrome, Firefox, Safari and Edge, all since 2017</dd></div>
+          <div><dt>First W3C standard</dt><dd>WebAssembly 1.0, 5 December 2019</dd></div>
+          <div><dt>Latest version</dt><dd>3.0, announced September 2025</dd></div>
+          <div><dt>Demo module on this site</dt><dd>204 bytes, 5 exports</dd></div>
+        </dl>
+      </section>
+    </main>
+    <footer class="foot">
+      <p>Independent student project. Not affiliated with webassembly.org or the W3C.</p>
+      <p><a href="https://github.com/gnyaneshwar76/webassembly-explained">Source code</a> &middot; <a href="privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+</body>
+</html>

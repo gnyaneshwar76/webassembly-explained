@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What is WebAssembly | WebAssembly, explained</title>
+  <meta name="description" content="What WebAssembly is, why it exists, how a module runs, and the core terms: module, instance, memory and table.">
+  
+  <link rel="canonical" href="https://gnyaneshwar76.github.io/webassembly-explained/what-is-wasm.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="What is WebAssembly">
+  <meta property="og:description" content="What WebAssembly is, why it exists, how a module runs, and the core terms: module, instance, memory and table.">
+  <meta property="og:url" content="https://gnyaneshwar76.github.io/webassembly-explained/what-is-wasm.html">
+  <meta property="og:image" content="https://gnyaneshwar76.github.io/webassembly-explained/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="top">
+      <a class="wordmark" href="index.html">WebAssembly, explained</a>
+      <nav aria-label="Main"><a href="index.html">Overview</a><a href="what-is-wasm.html" aria-current="page">What is Wasm</a><a href="try-it.html">Try it</a><a href="languages.html">Languages and tools</a><a href="resources.html">Resources</a></nav>
+    </header>
+    <main id="main">
+      <div class="doc">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ul>
+          <li><a href="#short">The short version</a></li><li><a href="#why">Why it exists</a></li><li><a href="#run">How a module runs</a></li>
+          <li><a href="#terms">Core terms</a></li><li><a href="#formats">Two formats</a></li><li><a href="#limits">What it cannot do alone</a></li>
+          <li><a href="#outside">Beyond the browser</a></li><li><a href="#versions">Versions</a></li></ul></nav>
+        <div class="prose">
+          <header><p class="eyebrow">Concepts</p><h1>What is WebAssembly</h1></header>
+
+          <section id="short"><h2>The short version</h2>
+            <p>WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual machine. It is a portable compilation target: other languages compile to it, and the result runs in any engine that implements it, in the browser or outside it.</p>
+            <p>It does not replace JavaScript. The two run in the same engine and call each other. JavaScript stays in charge of the page, and Wasm takes the heavy numeric work.</p></section>
+
+          <section id="why"><h2>Why it exists</h2>
+            <p>JavaScript is flexible, but it was not designed for work like video codecs, 3D engines or image processing. Mozilla's asm.js (2013) showed that a strict subset of JavaScript could run much faster. WebAssembly replaced that idea with a real binary format. It reached all four major browsers in 2017.</p>
+            <p>The other motive is reuse. Decades of C, C++ and Rust code can now run on the web without being rewritten.</p></section>
+
+          <section id="run"><h2>How a module runs</h2>
+            <ol>
+              <li>You write code in a language with a Wasm target.</li>
+              <li>A compiler produces a <code>.wasm</code> file.</li>
+              <li>The browser downloads it, then validates and compiles it.</li>
+              <li>JavaScript instantiates the module, supplying anything it imports.</li>
+              <li>JavaScript calls the module's exported functions like ordinary functions.</li>
+            </ol>
+            <pre><code>const { instance } = await WebAssembly.instantiateStreaming(fetch("demo.wasm"));
+console.log(instance.exports.add(2, 3)); // 5</code></pre>
+            <p class="muted small"><code>instantiateStreaming</code> compiles while the file downloads. The server must send the <code>application/wasm</code> content type, which GitHub Pages does.</p></section>
+
+          <section id="terms"><h2>Core terms</h2>
+            <dl class="rows">
+              <div><dt>Module</dt><dd>The compiled binary. It has no state of its own and declares what it imports and exports.</dd></div>
+              <div><dt>Instance</dt><dd>A module plus its running state: its memories, tables and imported values.</dd></div>
+              <div><dt>Memory</dt><dd>A growable buffer of raw bytes that Wasm instructions read and write. JavaScript can see the same bytes.</dd></div>
+              <div><dt>Table</dt><dd>A growable array of references, such as functions, that cannot be stored as plain bytes.</dd></div>
+              <div><dt>Import and export</dt><dd>Imports are things the module needs from outside, for example a JavaScript function. Exports are what it offers back.</dd></div>
+            </dl>
+            <p>The core number types are <code>i32</code>, <code>i64</code>, <code>f32</code> and <code>f64</code>, plus vector and reference types. There is no string type. Text is stored in memory as bytes and both sides agree on how to read it.</p></section>
+
+          <section id="formats"><h2>Two formats</h2>
+            <p>Every module has a compact binary form (<code>.wasm</code>) and an equivalent text form (<code>.wat</code>) that people can read and write. A tool such as WABT converts one to the other. This is the same function in both forms:</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Text</th><th>Binary (hex)</th></tr></thead>
+              <tbody>
+                <tr><td><code>local.get 0</code></td><td class="num">20 00</td></tr>
+                <tr><td><code>local.get 1</code></td><td class="num">20 01</td></tr>
+                <tr><td><code>i32.add</code></td><td class="num">6a</td></tr>
+                <tr><td><code>end</code></td><td class="num">0b</td></tr>
+              </tbody></table></div>
+            <p>That is the body of <code>add(a, b)</code>: push both arguments onto the stack, add the top two values, finish. The <a href="try-it.html">Try it</a> page shows the full source and bytes of a working module.</p></section>
+
+          <section id="limits"><h2>What it cannot do alone</h2>
+            <p>Wasm has no direct access to the page. To change the DOM, draw on a canvas or make a network request, it calls a JavaScript function that it imported. That glue code is why tools such as Emscripten and wasm-bindgen generate a JavaScript file next to the <code>.wasm</code>.</p></section>
+
+          <section id="outside"><h2>Beyond the browser</h2>
+            <p>The same sandboxed format runs on servers and devices. WASI (the WebAssembly System Interface) gives modules controlled access to files and clocks. Runtimes such as Wasmtime and Wasmer, and Node.js, can execute Wasm.</p></section>
+
+          <section id="versions"><h2>Versions</h2>
+            <p>WebAssembly 1.0 became a W3C Recommendation on 5 December 2019. Version 3.0 was announced as complete in September 2025, adding features such as garbage collection, 64-bit memory addressing, exception handling and tail calls. Which feature works in which engine is tracked on the <a href="https://webassembly.org/features/">official feature status page</a>.</p>
+            <p class="muted small">Sources: <a href="https://www.w3.org/press-releases/2019/wasm">W3C press release, 2019</a>; <a href="https://sdtimes.com/softwaredev/wasm-3-0-standard-is-now-officially-complete/">SD Times on version 3.0</a>; <a href="https://developer.mozilla.org/en-US/docs/WebAssembly/Guides/Concepts">MDN WebAssembly concepts</a>.</p></section>
+        </div>
+      </div>
+    </main>
+    <footer class="foot">
+      <p>Independent student project. Not affiliated with webassembly.org or the W3C.</p>
+      <p><a href="https://github.com/gnyaneshwar76/webassembly-explained">Source code</a> &middot; <a href="privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+</body>
+</html>

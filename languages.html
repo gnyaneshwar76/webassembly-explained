@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Languages and tools | WebAssembly, explained</title>
+  <meta name="description" content="Which languages compile to WebAssembly and the common tools for each, plus the tools that read, write and optimise Wasm.">
+  
+  <link rel="canonical" href="https://gnyaneshwar76.github.io/webassembly-explained/languages.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Languages and tools">
+  <meta property="og:description" content="Which languages compile to WebAssembly and the common tools for each, plus the tools that read, write and optimise Wasm.">
+  <meta property="og:url" content="https://gnyaneshwar76.github.io/webassembly-explained/languages.html">
+  <meta property="og:image" content="https://gnyaneshwar76.github.io/webassembly-explained/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="top">
+      <a class="wordmark" href="index.html">WebAssembly, explained</a>
+      <nav aria-label="Main"><a href="index.html">Overview</a><a href="what-is-wasm.html">What is Wasm</a><a href="try-it.html">Try it</a><a href="languages.html" aria-current="page">Languages and tools</a><a href="resources.html">Resources</a></nav>
+    </header>
+    <main id="main">
+      <div class="prose">
+        <header><p class="eyebrow">Tooling</p><h1>Languages and tools</h1>
+          <p class="lead">Many languages can produce WebAssembly. A compiler turns source code into a <code>.wasm</code> file, an optimiser can shrink it, and JavaScript loads it.</p></header>
+        <section><h2>Languages</h2>
+          <div class="table-wrap"><table>
+            <caption>Common ways to target WebAssembly</caption>
+            <thead><tr><th>Language</th><th>Common toolchain</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>C and C++</td><td>Emscripten, or clang with a <code>wasm32</code> target</td><td>The largest body of ported code. SQLite, for example, has an official Wasm build.</td></tr>
+              <tr><td>Rust</td><td>Built-in <code>wasm32</code> targets, wasm-bindgen, wasm-pack</td><td>No garbage collector, so output can be small.</td></tr>
+              <tr><td>AssemblyScript</td><td><code>asc</code> compiler</td><td>TypeScript-like syntax designed for Wasm.</td></tr>
+              <tr><td>Go</td><td>Standard compiler (<code>GOOS=js GOARCH=wasm</code>), or TinyGo</td><td>The standard output carries the Go runtime and is larger. TinyGo produces smaller files.</td></tr>
+              <tr><td>Zig</td><td>Built-in <code>wasm32</code> targets</td><td>Compiles to Wasm without extra tooling.</td></tr>
+              <tr><td>C#</td><td>Blazor WebAssembly</td><td>Runs the .NET runtime inside Wasm.</td></tr>
+              <tr><td>Python</td><td>Pyodide</td><td>CPython compiled to Wasm, so Python runs in the browser.</td></tr>
+              <tr><td>Kotlin and Dart</td><td>Kotlin/Wasm, Dart's Wasm compiler</td><td>Use WebAssembly's garbage collection support.</td></tr>
+            </tbody></table></div></section>
+        <section><h2>Tools for Wasm itself</h2>
+          <dl class="rows">
+            <div><dt>WABT</dt><dd>The WebAssembly Binary Toolkit. <code>wat2wasm</code> turns text into binary and <code>wasm2wat</code> goes back. The demo module on this site was built with it.</dd></div>
+            <div><dt>Binaryen</dt><dd>An optimiser and compiler toolkit. Its <code>wasm-opt</code> tool makes modules smaller and faster.</dd></div>
+            <div><dt>Browser DevTools</dt><dd>Chrome, Firefox and Safari can show a module's text form and step through it in the debugger.</dd></div>
+          </dl></section>
+      </div>
+    </main>
+    <footer class="foot">
+      <p>Independent student project. Not affiliated with webassembly.org or the W3C.</p>
+      <p><a href="https://github.com/gnyaneshwar76/webassembly-explained">Source code</a> &middot; <a href="privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+</body>
+</html>

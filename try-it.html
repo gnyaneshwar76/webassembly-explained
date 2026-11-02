@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Try it | WebAssembly, explained</title>
+  <meta name="description" content="Load a real WebAssembly module in your browser, read its source and bytes, call its functions, and time it against JavaScript.">
+  
+  <link rel="canonical" href="https://gnyaneshwar76.github.io/webassembly-explained/try-it.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Try it">
+  <meta property="og:description" content="Load a real WebAssembly module in your browser, read its source and bytes, call its functions, and time it against JavaScript.">
+  <meta property="og:url" content="https://gnyaneshwar76.github.io/webassembly-explained/try-it.html">
+  <meta property="og:image" content="https://gnyaneshwar76.github.io/webassembly-explained/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="top">
+      <a class="wordmark" href="index.html">WebAssembly, explained</a>
+      <nav aria-label="Main"><a href="index.html">Overview</a><a href="what-is-wasm.html">What is Wasm</a><a href="try-it.html" aria-current="page">Try it</a><a href="languages.html">Languages and tools</a><a href="resources.html">Resources</a></nav>
+    </header>
+    <main id="main">
+      <div class="doc">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ul>
+          <li><a href="#module">The module</a></li><li><a href="#add">add</a></li><li><a href="#factorial">factorial</a></li>
+          <li><a href="#sum">sum, using memory</a></li><li><a href="#speed">Speed test</a></li></ul></nav>
+        <div class="prose">
+          <header>
+            <p class="eyebrow">Live demo</p><h1>Try it</h1>
+            <p class="lead">This page downloads <code>demo.wasm</code>, a module written by hand in the text format, and calls it from JavaScript.</p>
+            <p class="status" role="status"><span class="dot" id="dot"></span><span id="status-text">Loading module</span></p>
+            <p class="msg" data-kind="error" id="load-error" hidden></p>
+          </header>
+
+          <section id="module"><h2>The module</h2>
+            <p id="module-info" class="muted">Waiting for the module to load.</p>
+            <ul id="exports" class="mono small"></ul>
+            <details><summary>Source, in the text format (demo.wat)</summary><pre id="wat" tabindex="0" aria-label="demo.wat source">Loading source</pre></details>
+            <details><summary>Binary, as hexadecimal bytes</summary><pre id="hex" tabindex="0" aria-label="demo.wasm bytes">Loading bytes</pre></details>
+            <p class="muted small">The first line starts <code>00 61 73 6d</code> (the magic number) and <code>01 00 00 00</code> (version 1).</p></section>
+
+          <section id="add"><h2>add</h2>
+            <fieldset class="card"><legend>add(a, b), 32-bit integers</legend>
+              <div class="inline">
+                <div class="field"><label for="add-a">a</label><input type="number" id="add-a" value="2147483647" step="1" inputmode="numeric"></div>
+                <div class="field"><label for="add-b">b</label><input type="number" id="add-b" value="1" step="1" inputmode="numeric"></div>
+              </div>
+              <p class="result" id="add-out" aria-live="polite"></p>
+              <p class="msg" id="add-msg"></p></fieldset></section>
+
+          <section id="factorial"><h2>factorial</h2>
+            <fieldset class="card"><legend>factorial(n), 64-bit result</legend>
+              <div class="field"><label for="fact-n">n, from 0 to 20</label><input type="number" id="fact-n" value="20" min="0" max="20" step="1" inputmode="numeric"></div>
+              <p class="result" id="fact-out" aria-live="polite"></p>
+              <p class="msg" id="fact-msg"></p></fieldset>
+            <p class="muted small">A 64-bit integer reaches JavaScript as a <code>BigInt</code>. 21! no longer fits in 64 bits, so the input stops at 20.</p></section>
+
+          <section id="sum"><h2>sum, using memory</h2>
+            <p>JavaScript writes numbers into the module's memory. Wasm then reads them straight from those bytes and adds them up.</p>
+            <fieldset class="card"><legend>sum(pointer, length)</legend>
+              <div class="field"><label for="sum-in">Integers, separated by commas</label><input type="text" id="sum-in" value="10, 20, 30, -5" inputmode="text" autocomplete="off" spellcheck="false"></div>
+              <p class="result" id="sum-out" aria-live="polite"></p>
+              <p class="msg" id="sum-msg"></p>
+              <p class="mono small muted" id="sum-mem"></p></fieldset></section>
+
+          <section id="speed"><h2>Speed test</h2>
+            <p>The same naive recursive <code>fib(n)</code>, written once in WebAssembly and once in JavaScript. Each runs five times after a warm-up, and the table shows the median.</p>
+            <fieldset class="card"><legend>fib(n)</legend>
+              <div class="field"><label for="bench-n">n, from 20 to 38</label><input type="number" id="bench-n" value="35" min="20" max="38" step="1" inputmode="numeric"></div>
+              <div class="actions"><button type="button" class="btn-primary" id="bench-run" disabled>Run benchmark</button><span class="msg" id="bench-msg"></span></div>
+              <div class="table-wrap" id="bench-table" hidden><table>
+                <caption>Time for each run, in milliseconds</caption>
+                <thead><tr><th>Runtime</th><th class="num">Median</th><th class="num">All runs</th></tr></thead>
+                <tbody><tr><td>WebAssembly</td><td class="num" id="b-wasm-med"></td><td class="num" id="b-wasm-all"></td></tr>
+                <tr><td>JavaScript</td><td class="num" id="b-js-med"></td><td class="num" id="b-js-all"></td></tr></tbody></table></div>
+              <p class="verdict" id="bench-verdict" aria-live="polite"></p></fieldset>
+            <p class="muted small">Results depend on your device and browser. Modern JavaScript engines are very fast at simple integer code, so a close result is normal. WebAssembly's strengths are predictable speed, small binaries and reuse of existing C, C++ and Rust code.</p></section>
+        </div>
+      </div>
+    </main>
+    <footer class="foot">
+      <p>Independent student project. Not affiliated with webassembly.org or the W3C.</p>
+      <p><a href="https://github.com/gnyaneshwar76/webassembly-explained">Source code</a> &middot; <a href="privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+  <script src="try-it.js"></script>
+</body>
+</html>
