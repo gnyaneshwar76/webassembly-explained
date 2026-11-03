@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -40,8 +40,8 @@
           <section id="module"><h2>The module</h2>
             <p id="module-info" class="muted">Waiting for the module to load.</p>
             <ul id="exports" class="mono small"></ul>
-            <details><summary>Source, in the text format (demo.wat)</summary><pre id="wat" tabindex="0" aria-label="demo.wat source">Loading source</pre></details>
-            <details><summary>Binary, as hexadecimal bytes</summary><pre id="hex" tabindex="0" aria-label="demo.wasm bytes">Loading bytes</pre></details>
+            <details><summary>Source, in the text format (demo.wat)</summary><pre id="wat" tabindex="0" role="region" aria-label="demo.wat source">Loading source</pre></details>
+            <details><summary>Binary, as hexadecimal bytes</summary><pre id="hex" tabindex="0" role="region" aria-label="demo.wasm bytes">Loading bytes</pre></details>
             <p class="muted small">The first line starts <code>00 61 73 6d</code> (the magic number) and <code>01 00 00 00</code> (version 1).</p></section>
 
           <section id="add"><h2>add</h2>
@@ -73,7 +73,7 @@
             <fieldset class="card"><legend>fib(n)</legend>
               <div class="field"><label for="bench-n">n, from 20 to 38</label><input type="number" id="bench-n" value="35" min="20" max="38" step="1" inputmode="numeric"></div>
               <div class="actions"><button type="button" class="btn-primary" id="bench-run" disabled>Run benchmark</button><span class="msg" id="bench-msg"></span></div>
-              <div class="table-wrap" id="bench-table" hidden><table>
+              <div class="table-wrap" id="bench-table" tabindex="0" role="region" aria-label="Benchmark results" hidden><table>
                 <caption>Time for each run, in milliseconds</caption>
                 <thead><tr><th>Runtime</th><th class="num">Median</th><th class="num">All runs</th></tr></thead>
                 <tbody><tr><td>WebAssembly</td><td class="num" id="b-wasm-med"></td><td class="num" id="b-wasm-all"></td></tr>

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -49,7 +49,7 @@
               <li>JavaScript instantiates the module, supplying anything it imports.</li>
               <li>JavaScript calls the module's exported functions like ordinary functions.</li>
             </ol>
-            <pre><code>const { instance } = await WebAssembly.instantiateStreaming(fetch("demo.wasm"));
+            <pre tabindex="0" role="region" aria-label="Code example"><code>const { instance } = await WebAssembly.instantiateStreaming(fetch("demo.wasm"));
 console.log(instance.exports.add(2, 3)); // 5</code></pre>
             <p class="muted small"><code>instantiateStreaming</code> compiles while the file downloads. The server must send the <code>application/wasm</code> content type, which GitHub Pages does.</p></section>
 
@@ -65,7 +65,7 @@ console.log(instance.exports.add(2, 3)); // 5</code></pre>
 
           <section id="formats"><h2>Two formats</h2>
             <p>Every module has a compact binary form (<code>.wasm</code>) and an equivalent text form (<code>.wat</code>) that people can read and write. A tool such as WABT converts one to the other. This is the same function in both forms:</p>
-            <div class="table-wrap"><table>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table"><table>
               <thead><tr><th>Text</th><th>Binary (hex)</th></tr></thead>
               <tbody>
                 <tr><td><code>local.get 0</code></td><td class="num">20 00</td></tr>
